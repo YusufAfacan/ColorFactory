@@ -10,6 +10,8 @@ public class PistonArm : MonoBehaviour
     public bool isReleased;
     public Transform arm;
     public Transform gripper;
+    public Transform grabbingPoint;
+    public Ball grabbedBall;
     private void Awake()
     {
         startPos = transform.position;
