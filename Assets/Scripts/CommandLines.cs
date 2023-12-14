@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,10 @@ public class CommandLines : MonoBehaviour
     public int totalNumberOfCommandTiles;
     public int currentCommandTile;
     public TileManager tileManager;
+    public int totalNumberOfMoves;
+    public List<PistonArm> pistonArms;
+    public ChallengeManager challengeManager;
+    public Transform commandIndicator;
 
     private CancellationTokenSource _cancellationTokenSource = new();
 
@@ -25,23 +30,37 @@ public class CommandLines : MonoBehaviour
             {
                 if (balls[i].transform.position == tileManager.tiles[j].transform.position)
                 {
-                    if ((int)balls[i].ballType != (int)tileManager.tiles[j].occupyingTarget.targetType)
+                    if (tileManager.tiles[j].occupyingTarget != null)
                     {
-                        Debug.Log("Fail");
-                        return;
+                        if ((int)balls[i].ballType == (int)tileManager.tiles[j].occupyingTarget.targetType)
+                        {
+                            Debug.Log("Success");
+                            
+
+                        }
+                        else
+                        {
+                            Debug.Log("fail");
+                            
+                        }
                     }
                     else
                     {
-                        Debug.Log("Success");
+                        Debug.Log("fail");
                     }
                 }
+                
             }
         }
+
+        challengeManager.CheckChallenges();
+
     }
 
     private void Awake()
     {
         tileManager = FindObjectOfType<TileManager>();
+        challengeManager = FindObjectOfType<ChallengeManager>();
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -52,24 +71,46 @@ public class CommandLines : MonoBehaviour
 
     }
 
-    private void Start()
-    {
-        for (int i = 0; i < commandLines.Count; i++)
-        {
-            totalNumberOfCommandTiles += commandLines[i].commands.Count;
-        }
+    //private void Start()
+    //{
+    //    for (int i = 0; i < commandLines.Count; i++)
+    //    {
+    //        totalNumberOfCommandTiles += commandLines[i].commands.Count;
+    //    }
 
 
-    }
+    //}
 
     public async void StartCommanding()
     {
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < pistonArms.Count; i++)
+        {
+            if (pistonArms[i].isDeclared)
+            {
+                totalNumberOfCommandTiles += commandLines[i].commands.Count;
+            }
+
+        }
+
+
+
+        for (int i = 0; i < commandLines[1].commands.Count; i++)
         {
             for (int j = 0; j < commandLines.Count; j++)
+            {
+                commandLines[j].ExecuteNextCommand();
 
-            commandLines[j].ExecuteNextCommand();
-            await UniTask.Delay(TimeSpan.FromSeconds(1.1f), DelayType.DeltaTime, PlayerLoopTiming.Update, _cancellationTokenSource.Token);
+                if (commandLines[j].commands[i].declaredCommand == CommandTile.DeclaredCommand.None)
+                {
+                    commandIndicator.DOMove(commandLines[j].commands[i].transform.position, 0.1f);
+                    await UniTask.Delay(TimeSpan.FromSeconds(0.2f), DelayType.DeltaTime, PlayerLoopTiming.Update, _cancellationTokenSource.Token);
+                }
+                else
+                {
+                    commandIndicator.DOMove(commandLines[j].commands[i].transform.position, 0.55f);
+                    await UniTask.Delay(TimeSpan.FromSeconds(1.1f), DelayType.DeltaTime, PlayerLoopTiming.Update, _cancellationTokenSource.Token);
+                }
+            }
         }
     }
 

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public Transform targetCircle;
+    //public Transform targetCircle;
     public bool isGrabbed;
-    public enum BallType {Red, Green, Blue, Black, White}
+    public enum BallType {Red, Green, Blue, Black, White, Yellow, Magenta, Cyan}
     public BallType ballType;
     public SpriteRenderer spriteRenderer;
 
@@ -15,6 +15,9 @@ public class Ball : MonoBehaviour
     public Sprite blueBall;
     public Sprite blackBall;
     public Sprite whiteBall;
+    public Sprite yellowBall;
+    public Sprite magentaBall;
+    public Sprite cyanBall;
 
     private void Awake()
     {

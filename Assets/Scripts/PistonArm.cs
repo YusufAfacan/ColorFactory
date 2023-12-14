@@ -8,6 +8,7 @@ public class PistonArm : MonoBehaviour
     public bool isExtracted;
     public bool isGrabbed;
     public bool isReleased;
+    public bool isDeclared;
     public Transform arm;
     public Transform gripper;
     public Transform grabbingPoint;
@@ -71,21 +72,25 @@ public class PistonArm : MonoBehaviour
                 {
                     transform.position = hit.transform.position;
                     hit.transform.GetComponent<Tile>().isOccupied = true;
+                    isDeclared = true;
                 }
                 else
                 {
                     transform.position = startPos;
+                    isDeclared = false;
                 }
                     
             }
             else
             {
                 transform.position = startPos;
+                isDeclared = false;
             }
         }
         else
         {
             transform.position = startPos;
+            isDeclared = false;
         }
         
     }

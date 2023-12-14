@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: ef2f316538bdcba439c127c23d3c9b33, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -133,6 +133,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 092195878aea0b244b349ad94ae2d24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetCircle: {fileID: 0}
   isGrabbed: 0
-  ballType: 1
+  ballType: 2
+  spriteRenderer: {fileID: 5080727670800525738}
+  redBall: {fileID: 21300000, guid: 5fbc8453d49fc794c84657c2a9b81f13, type: 3}
+  greenBall: {fileID: 21300000, guid: 7f3e0a0e0b3098d448d26e56b0687be1, type: 3}
+  blueBall: {fileID: 21300000, guid: ef2f316538bdcba439c127c23d3c9b33, type: 3}
+  blackBall: {fileID: 21300000, guid: cdbc18ad90444ae4e9522fed99a65bdb, type: 3}
+  whiteBall: {fileID: 21300000, guid: b15e8a70c1a2ac74989c5cdddf5717ad, type: 3}
+  yellowBall: {fileID: 21300000, guid: 3a9deaeaa38ca9a43a495d33aa0f6be7, type: 3}
+  magentaBall: {fileID: 21300000, guid: 8a4d24eeb68afb248a6cd2372a84c158, type: 3}
+  cyanBall: {fileID: 21300000, guid: dc916780632b03d47badc4169da62d91, type: 3}

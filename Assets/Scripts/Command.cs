@@ -7,6 +7,9 @@ public class Command : MonoBehaviour
 
     private Vector2 startPos;
     private bool isBeingHeld = false;
+    private bool isDeclared = false;
+
+    public GameObject prefabOfItself;
 
 
     private void Awake()
@@ -39,6 +42,11 @@ public class Command : MonoBehaviour
 
                 }
             }
+
+            if(!isDeclared)
+            Instantiate(prefabOfItself, transform.position, Quaternion.identity);
+
+
         }
 
     }
@@ -72,6 +80,7 @@ public class Command : MonoBehaviour
                 {
                     transform.position = hit.transform.position;
                     tile.isOccupied = true;
+                    isDeclared = true;
                     DeclareCommand(tile);
                 }
                 else
