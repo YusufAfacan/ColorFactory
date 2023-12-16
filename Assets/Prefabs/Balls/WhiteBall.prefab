@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: b15e8a70c1a2ac74989c5cdddf5717ad, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -133,6 +133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 092195878aea0b244b349ad94ae2d24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetCircle: {fileID: 0}
   isGrabbed: 0
-  ballType: 3
+  grabbingArm: {fileID: 0}
+  ballType: 4
+  spriteRenderer: {fileID: 0}
+  tileManager: {fileID: 0}
