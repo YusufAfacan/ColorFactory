@@ -1,36 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
 public class ChallengeManager : MonoBehaviour
 {
-    public List<Challenge> challenges;
-    public CommandLines commandLines;
-
+    
+    private CommandLines commandLines;
+    public int moveAmount;
+    public int armsUsed;
+    public bool isStarCollected;
+    public bool levelHaveStar;
     private void Awake()
     {
         commandLines = FindObjectOfType<CommandLines>();
+        
     }
-
 
     public void CheckChallenges()
     {
-        for (int i = 0; i < challenges.Count; i++)
+        if (moveAmount > 0 && commandLines.totalNumberOfMoves <= moveAmount)
         {
-            if (challenges[i].challangeType == Challenge.ChallangeType.LimitedMove)
-            {
-                if (commandLines.totalNumberOfMoves <= challenges[i].moveAmount)
-                {
-                    Debug.Log("ChallengeSuccess");
-                }
-                else
-                {
-                    Debug.Log("ChallengeFail");
-                }
-            }
-            
-
+            Debug.Log("LimitedMoveChallengeSuccess");
         }
+        else if(moveAmount > 0 && commandLines.totalNumberOfMoves > moveAmount)
+        {
+            Debug.Log("LimitedMoveChallengeFail");
+        }
+
+        if (armsUsed > 0 && commandLines.usedPistonArms.Count <= armsUsed)
+        {
+            Debug.Log("LimitedArmsChallengeSuccess");
+        }
+        else if(armsUsed > 0 && commandLines.usedPistonArms.Count > armsUsed)
+        {
+            Debug.Log("LimitedArmsChallengeFail");
+        }
+        
+        if(levelHaveStar && isStarCollected)
+        {
+            Debug.Log("CollectStarChallengeSuccess");
+        }
+        else if(levelHaveStar && !isStarCollected)
+        {
+            Debug.Log("CollectStarChallengeFail");
+        }
+
     }
 }

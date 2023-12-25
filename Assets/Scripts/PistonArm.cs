@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 
 public class PistonArm : MonoBehaviour
@@ -17,15 +18,22 @@ public class PistonArm : MonoBehaviour
     public CommandLines commandLines;
     public CommandLine commandLine;
     public TileManager tileManager;
+    public AudioClip audioClip;
+    public SoundManager soundManager;
+    public GameManager gameManager;
+   
     private void Awake()
     {
         startPos = transform.position;
         commandLines = FindObjectOfType<CommandLines>();
         tileManager = FindObjectOfType<TileManager>();
-
+        soundManager = FindObjectOfType<SoundManager>();
+        gameManager = FindObjectOfType<GameManager>();
     }
     private void OnMouseDown()
     {
+        if (!gameManager.canPlay) return;
+
         if(Input.GetMouseButtonDown(0))
         {
             isBeingHeld = true;
@@ -49,6 +57,8 @@ public class PistonArm : MonoBehaviour
     }
     private void Update()
     {
+        if (!gameManager.canPlay) return;
+
         if (isBeingHeld)
         {
             Vector3 mousePos;
@@ -59,6 +69,8 @@ public class PistonArm : MonoBehaviour
     }
     private void OnMouseUp()
     {
+        if (!gameManager.canPlay) return;
+
         isBeingHeld = false;
         Ray ray;
         RaycastHit hit;
@@ -99,9 +111,12 @@ public class PistonArm : MonoBehaviour
         Vector3 armRot = transform.rotation.eulerAngles;
         Vector3 rot = new Vector3(0, 0, 90);
         transform.DORotate(armRot + rot, 1, RotateMode.Fast).OnComplete(() =>
-        { if (grabbedBall != null) { grabbedBall.CheckConverter(); }; });
+        { if (grabbedBall != null) { grabbedBall.CheckConverter(); grabbedBall.CheckStar(); }; });
         commandLines.totalNumberOfMoves++;
+        soundManager.PlayAudioClip(audioClip);
     }
+
+    
 
     public void CounterClockwise()
     {
@@ -109,8 +124,9 @@ public class PistonArm : MonoBehaviour
         Vector3 armRot = transform.rotation.eulerAngles;
         Vector3 rot = new Vector3(0, 0, -90);
         transform.DORotate(armRot + rot, 1, RotateMode.Fast).OnComplete(() =>
-        { if (grabbedBall != null) { grabbedBall.CheckConverter(); }; });
+        { if (grabbedBall != null) { grabbedBall.CheckConverter(); grabbedBall.CheckStar(); }; });
         commandLines.totalNumberOfMoves++;
+        soundManager.PlayAudioClip(audioClip);
     }
 
 
@@ -122,8 +138,9 @@ public class PistonArm : MonoBehaviour
             arm.DOScaleY(3, 1);
             gripper.DOLocalMoveY(3.5f, 1);
             grabbingPoint.DOLocalMoveY(4, 1).OnComplete(() =>
-            { if (grabbedBall != null) { grabbedBall.CheckConverter(); }; });
+            { if (grabbedBall != null) { grabbedBall.CheckConverter(); grabbedBall.CheckStar(); }; });
             commandLines.totalNumberOfMoves++;
+            soundManager.PlayAudioClip(audioClip);
         }
     }
 
@@ -135,8 +152,9 @@ public class PistonArm : MonoBehaviour
             arm.DOScaleY(7, 1);
             gripper.DOLocalMoveY(7.5f, 1);
             grabbingPoint.DOLocalMoveY(8, 1).OnComplete(() =>
-            { if (grabbedBall != null) { grabbedBall.CheckConverter(); }; });
+            { if (grabbedBall != null) { grabbedBall.CheckConverter(); grabbedBall.CheckStar(); }; });
             commandLines.totalNumberOfMoves++;
+            soundManager.PlayAudioClip(audioClip);
         }
     }
 
@@ -145,6 +163,7 @@ public class PistonArm : MonoBehaviour
         Debug.Log("Grab");
 
         gripper.DOScaleX(0.5f, 1);
+        soundManager.PlayAudioClip(audioClip);
 
         for (int i = 0; i < commandLines.balls.Count; i++)
         {
@@ -178,6 +197,7 @@ public class PistonArm : MonoBehaviour
     public void Release()
     {
         Debug.Log("Release");
+        soundManager.PlayAudioClip(audioClip);
         if (!isReleased)
         {
             if (grabbedBall != null)
@@ -195,14 +215,8 @@ public class PistonArm : MonoBehaviour
 
     public void None()
     {
+
         Debug.Log("None");
     }
 
-
-
-
-
-
-
-    
 }

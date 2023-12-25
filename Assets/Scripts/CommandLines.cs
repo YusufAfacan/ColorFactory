@@ -1,27 +1,38 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using DG.Tweening.Core.Easing;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CommandLines : MonoBehaviour
 {
     public List<CommandLine> commandLines = new();
-    public int totalNumberOfCommandTiles;
+    public List<CommandLine> usedCommandLines = new();
+    public List<PistonArm> pistonArms = new();
+    public List<PistonArm> usedPistonArms = new();
+    public List<Ball> balls = new();
     public int currentCommandTile;
-    public TileManager tileManager;
+    public int totalNumberOfCommandTiles;
     public int totalNumberOfMoves;
+
+    public TileManager tileManager;
     public ChallengeManager challengeManager;
     public Transform commandIndicator;
     private CancellationTokenSource _cancellationTokenSource = new();
     public GameObject panel;
-    public List<Ball> balls = new();
+    public GameManager gameManager;
+    
+    
+    
 
     private void Awake()
     {
         tileManager = FindObjectOfType<TileManager>();
         challengeManager = FindObjectOfType<ChallengeManager>();
+        gameManager = FindObjectOfType<GameManager>();
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -30,39 +41,70 @@ public class CommandLines : MonoBehaviour
         }
 
         balls.AddRange(FindObjectsOfType<Ball>(false));
+        pistonArms.AddRange(FindObjectsOfType<PistonArm>(false));
 
-        List<CommandTile> commandTiles = new List<CommandTile>();
-        commandTiles.AddRange(FindObjectsOfType<CommandTile>());
-        totalNumberOfCommandTiles = commandTiles.Count;
+        //List<CommandTile> commandTiles = new List<CommandTile>();
+        //commandTiles.AddRange(FindObjectsOfType<CommandTile>());
+        //totalNumberOfCommandTiles = commandTiles.Count;
     }
     public async void StartCommanding()
-    {
-        for (int i = 0; i < commandLines[0].commands.Count; i++)
-        {
-            for (int j = 0; j < commandLines.Count; j++)
-            {
-                currentCommandTile++;
-                commandLines[j].ExecuteNextCommand();
-                
-                if (commandLines[j].commands[i].declaredCommand == CommandTile.DeclaredCommand.None)
-                {
-                    commandIndicator.DOMove(commandLines[j].commands[i].transform.position, 0.1f);
-                    await UniTask.Delay(TimeSpan.FromSeconds(0.2f), DelayType.DeltaTime, PlayerLoopTiming.Update, _cancellationTokenSource.Token);
-                }
-                else
-                {
-                    commandIndicator.DOMove(commandLines[j].commands[i].transform.position, 0.55f);
-                    await UniTask.Delay(TimeSpan.FromSeconds(1.1f), DelayType.DeltaTime, PlayerLoopTiming.Update, _cancellationTokenSource.Token);
-                }
-            }
-        }
-    }
-    public void CheckBalls()
     {
         balls.Clear();
         balls.AddRange(FindObjectsOfType<Ball>(false));
 
+        usedCommandLines.Clear();
+        currentCommandTile = 0;
+        totalNumberOfCommandTiles = 0;
+        totalNumberOfMoves = 0;
 
+
+
+
+        for (int i = 0; i < pistonArms.Count; i++)
+        {
+            if (pistonArms[i].isDeclared)
+            {
+                usedPistonArms.Add(pistonArms[i]);
+            }
+        }
+
+        for (int i = 0; i < commandLines.Count; i++)
+        {
+            if (commandLines[i].commandingPistonArm.isDeclared)
+            {
+                usedCommandLines.Add(commandLines[i]);
+                totalNumberOfCommandTiles += commandLines[i].commands.Count;
+            }
+        }
+
+        if (usedCommandLines.Count > 0)
+        {
+            commandIndicator.transform.position = usedCommandLines[0].commands[0].transform.position;
+
+            for (int i = 0; i < usedCommandLines[0].commands.Count; i++)
+            {
+                for (int j = 0; j < usedCommandLines.Count; j++)
+                {
+                    currentCommandTile++;
+                    usedCommandLines[j].ExecuteNextCommand();
+
+                    if (usedCommandLines[j].commands[i].declaredCommand == CommandTile.DeclaredCommand.None)
+                    {
+                        commandIndicator.DOMove(usedCommandLines[j].commands[i].transform.position, 0.1f);
+                        await UniTask.Delay(TimeSpan.FromSeconds(0.2f), DelayType.DeltaTime, PlayerLoopTiming.Update, _cancellationTokenSource.Token);
+                    }
+                    else
+                    {
+                        commandIndicator.DOMove(usedCommandLines[j].commands[i].transform.position, 0.55f);
+                        await UniTask.Delay(TimeSpan.FromSeconds(1.1f), DelayType.DeltaTime, PlayerLoopTiming.Update, _cancellationTokenSource.Token);
+                    }
+                }
+            }
+
+        }
+    }
+    public void CheckBalls()
+    {
         for (int i = 0; i < balls.Count; i++)
         {
             for (int j = 0; j < tileManager.tiles.Count; j++)
@@ -74,18 +116,28 @@ public class CommandLines : MonoBehaviour
                         if ((int)balls[i].ballType != (int)tileManager.tiles[j].occupyingTarget.targetType)
                         {
                             Debug.Log("fail");
+                            gameManager.TryAgain();
+                            
+                            
                             return;
 
                         }
                         else
                         {
                             Debug.Log("Success");
+                            gameManager.LevelCleared();
                             challengeManager.CheckChallenges();
 
                         }
                     }
+                    else
+                    {
+                        Debug.Log("fail");
+                        gameManager.TryAgain();
 
+                    }
                 }
+                
 
             }
         }

@@ -8,5 +8,6 @@ public class Tile : MonoBehaviour
     public Ball occupyingBall;
     public Target occupyingTarget;
     public Converter occupyingConverter;
+    public Star occupyingStar;
     
 }

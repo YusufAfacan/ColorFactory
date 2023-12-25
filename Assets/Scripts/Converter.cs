@@ -14,16 +14,19 @@ public class Converter : MonoBehaviour
     public GameObject prefabOfItself;
     public Ball occupyingBall;
     public bool isOccupyingBall;
-
+    public GameManager gameManager;
 
     private void Awake()
     {
         startPos = transform.position;
+        gameManager = FindObjectOfType<GameManager>();
 
     }
 
     private void OnMouseDown()
     {
+        if (!gameManager.canPlay) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             isBeingHeld = true;
@@ -60,6 +63,8 @@ public class Converter : MonoBehaviour
 
     private void Update()
     {
+        if (!gameManager.canPlay) return;
+
         if (isBeingHeld)
         {
             Vector3 mousePos;
@@ -72,6 +77,8 @@ public class Converter : MonoBehaviour
 
     private void OnMouseUp()
     {
+
+        if (!gameManager.canPlay) return;
         isBeingHeld = false;
 
         Ray ray;

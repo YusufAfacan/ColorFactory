@@ -1,3 +1,4 @@
+using DG.Tweening.Core.Easing;
 using UnityEngine;
 
 public class Command : MonoBehaviour
@@ -10,16 +11,20 @@ public class Command : MonoBehaviour
     private bool isDeclared = false;
 
     public GameObject prefabOfItself;
+    public GameManager gameManager;
 
 
     private void Awake()
     {
         startPos = transform.position;
+        gameManager = FindObjectOfType<GameManager>();
 
     }
 
     private void OnMouseDown()
     {
+        if (!gameManager.canPlay) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             isBeingHeld = true;
@@ -53,6 +58,9 @@ public class Command : MonoBehaviour
 
     private void Update()
     {
+
+        if (!gameManager.canPlay) return;
+
         if (isBeingHeld)
         {
             Vector3 mousePos;
@@ -65,6 +73,8 @@ public class Command : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (!gameManager.canPlay) return;
+
         isBeingHeld = false;
 
         Ray ray;

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -9,13 +10,14 @@ public class Ball : MonoBehaviour
 
     [HideInInspector]
     public SpriteRenderer spriteRenderer;
-
     private TileManager tileManager;
+    public ChallengeManager challengeManager;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         tileManager = FindObjectOfType<TileManager>();
+        challengeManager = FindObjectOfType<ChallengeManager>();
     }
 
     public void CheckConverter()
@@ -130,7 +132,7 @@ public class Ball : MonoBehaviour
 
     public void ChangeBallColorTo(Color color)
     {
-        spriteRenderer.color = color;
+        spriteRenderer.DOColor(color, 0.5f);
 
         if (color == Color.red)
         {
@@ -164,6 +166,30 @@ public class Ball : MonoBehaviour
         {
             ballType = BallType.White;
         }
+    }
 
+    public void CheckStar()
+    {
+        for (int i = 0; i < tileManager.tiles.Count; i++)
+        {
+            if (transform.position == tileManager.tiles[i].transform.position)
+            {
+                if (tileManager.tiles[i].isOccupied)
+                {
+                    if (tileManager.tiles[i].occupyingStar != null)
+                    {
+                        challengeManager.isStarCollected = true;
+                        tileManager.tiles[i].isOccupied = false;
+                        tileManager.tiles[i].occupyingStar.gameObject.SetActive(false);
+                        tileManager.tiles[i].occupyingStar = null;
+                        
+
+                    }
+                }
+            }
+            
+
+            
+        }
     }
 }
