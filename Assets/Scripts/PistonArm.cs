@@ -107,7 +107,7 @@ public class PistonArm : MonoBehaviour
 
     public void Clockwise()
     {
-        Debug.Log("Clockwise");
+        
         Vector3 armRot = transform.rotation.eulerAngles;
         Vector3 rot = new Vector3(0, 0, 90);
         transform.DORotate(armRot + rot, 1, RotateMode.Fast).OnComplete(() =>
@@ -120,7 +120,7 @@ public class PistonArm : MonoBehaviour
 
     public void CounterClockwise()
     {
-        Debug.Log("CounterClockwise");
+        
         Vector3 armRot = transform.rotation.eulerAngles;
         Vector3 rot = new Vector3(0, 0, -90);
         transform.DORotate(armRot + rot, 1, RotateMode.Fast).OnComplete(() =>
@@ -132,7 +132,7 @@ public class PistonArm : MonoBehaviour
 
     public void Rectract()
     {
-        Debug.Log("Rectract");
+        
         if (!isRectracted)
         {
             arm.DOScaleY(3, 1);
@@ -146,7 +146,7 @@ public class PistonArm : MonoBehaviour
 
     public void Extract()
     {
-        Debug.Log("Extract");
+        
         if (!isExtracted)
         {
             arm.DOScaleY(7, 1);
@@ -160,7 +160,7 @@ public class PistonArm : MonoBehaviour
 
     public void Grab()
     {
-        Debug.Log("Grab");
+        
 
         gripper.DOScaleX(0.5f, 1);
         soundManager.PlayAudioClip(audioClip);
@@ -174,7 +174,7 @@ public class PistonArm : MonoBehaviour
 
                 if (ball.isGrabbed)
                 {
-                    Debug.Log("BALL IS GRABBED BY ANOTHER ARM");
+                    
 
                     commandLine.nextCommandIndex++;
 
@@ -196,7 +196,7 @@ public class PistonArm : MonoBehaviour
 
     public void Release()
     {
-        Debug.Log("Release");
+        
         soundManager.PlayAudioClip(audioClip);
         if (!isReleased)
         {
@@ -216,7 +216,7 @@ public class PistonArm : MonoBehaviour
     public void None()
     {
 
-        Debug.Log("None");
+        
     }
 
 }

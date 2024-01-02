@@ -115,7 +115,7 @@ public class CommandLines : MonoBehaviour
                     {
                         if ((int)balls[i].ballType != (int)tileManager.tiles[j].occupyingTarget.targetType)
                         {
-                            Debug.Log("fail");
+                            
                             gameManager.TryAgain();
                             
                             
@@ -124,7 +124,7 @@ public class CommandLines : MonoBehaviour
                         }
                         else
                         {
-                            Debug.Log("Success");
+                            
                             gameManager.LevelCleared();
                             challengeManager.CheckChallenges();
 
@@ -132,7 +132,7 @@ public class CommandLines : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("fail");
+                        
                         gameManager.TryAgain();
 
                     }

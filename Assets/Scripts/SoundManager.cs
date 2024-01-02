@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    private AudioSource audioSource;
+    public AudioSource audioSource;
 
     public AudioClip brown;
     public AudioClip cherry;
