@@ -53,15 +53,16 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (!PlayerPrefs.HasKey("CurrentLevel"))
-        {
-            PlayerPrefs.SetInt("CurrentLevel", 0);
-        }
 
-        if (PlayerPrefs.GetInt("CurrentLevel") != SceneManager.GetActiveScene().buildIndex)
-        {
-            SceneManager.LoadScene(PlayerPrefs.GetInt("CurrentLevel"));
-        }
+        //if (!PlayerPrefs.HasKey("CurrentLevel"))
+        //{
+        //    PlayerPrefs.SetInt("CurrentLevel", 0);
+        //}
+
+        //if (PlayerPrefs.GetInt("CurrentLevel") != SceneManager.GetActiveScene().buildIndex)
+        //{
+        //    SceneManager.LoadScene(PlayerPrefs.GetInt("CurrentLevel"));
+        //}
 
         
         

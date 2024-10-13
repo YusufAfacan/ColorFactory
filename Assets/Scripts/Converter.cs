@@ -14,6 +14,7 @@ public class Converter : MonoBehaviour
     public GameObject prefabOfItself;
     public Ball occupyingBall;
     public bool isOccupyingBall;
+    public bool isMoveble;
     public GameManager gameManager;
 
     private void Awake()
@@ -26,6 +27,7 @@ public class Converter : MonoBehaviour
     private void OnMouseDown()
     {
         if (!gameManager.canPlay) return;
+        if (!isMoveble) return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -64,6 +66,7 @@ public class Converter : MonoBehaviour
     private void Update()
     {
         if (!gameManager.canPlay) return;
+        if (!isMoveble) return;
 
         if (isBeingHeld)
         {
@@ -79,6 +82,7 @@ public class Converter : MonoBehaviour
     {
 
         if (!gameManager.canPlay) return;
+        if (!isMoveble) return;
         isBeingHeld = false;
 
         Ray ray;

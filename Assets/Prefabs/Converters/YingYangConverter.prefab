@@ -102,6 +102,8 @@ MonoBehaviour:
   prefabOfItself: {fileID: 1942928780408027134}
   occupyingBall: {fileID: 0}
   isOccupyingBall: 0
+  isMoveble: 1
+  gameManager: {fileID: 0}
 --- !u!61 &8239239737870119195
 BoxCollider2D:
   m_ObjectHideFlags: 0
